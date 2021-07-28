@@ -10,7 +10,7 @@ interface todo {
 }
 
 function App() {
-	const [todos, SetTodos] = useState<todo[]>(JSON.parse(localStorage.getItem("todo") || ""));
+	const [todos, SetTodos] = useState<todo[]>(JSON.parse(localStorage.getItem("todo") || "[]"));
 
 	let [textBoxValue, _setTextBoxValue] = useState<string>("")
 
@@ -63,7 +63,9 @@ function App() {
 				{( todos.length >= 2 ? 
 					<div style={{ marginLeft: "0.4em" }}>
 						<Button variant="contained" onClick={allDone}>Mark all as done</Button>
-					</div> : <></>
+						<Button variant="contained" onClick={() => SetTodos([])}>Remove all</Button>
+					</div> 
+					: <></>
 				)}
 			</div>
 
