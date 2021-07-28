@@ -49,7 +49,7 @@ function App() {
 
 	return (
 		<div className="container">
-			<h1>My epic todo app</h1>
+			<h1>Todo</h1>
 			<div className="todos">
 				{todos?.map((value, index) => 
 					<Todo 
