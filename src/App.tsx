@@ -8,32 +8,61 @@ import "./App.css"
 
 interface todo {
 	info: string,
-	done: boolean
+	done: boolean,
+	id: string
+}
+
+
+function makeid(length: number) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+	for ( var i = 0; i < length; i++ ) {
+    	result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   	}
+   return result;
 }
 
 function App() {
 	const [todos, SetTodos] = useState<todo[]>(JSON.parse(localStorage.getItem("todo") || "[]"));
 
-	let [textBoxValue, _setTextBoxValue] = useState<string>("")
+	const [sortedList, _setSorted] = useState<todo[]>([]);
 
+	//save todo when it changes
 	useEffect(() => {
 		localStorage.setItem("todo", JSON.stringify(todos))
+
+		let done: todo[] = [];
+		let undone: todo[] = [];
+
+		todos.forEach((item) => {
+			if (item.done)
+				done.push(item)
+			else
+				undone.push(item);
+		})
+
+		_setSorted([...undone, ...done])
 	}, [todos])
 
-	function toggleDone(index: number) {
+	//add textbox value
+	let [textBoxValue, _setTextBoxValue] = useState<string>("")
+
+	//functions for modifying the todo
+	function toggleDone(index: string) {
 		let newArray = [...todos]
 
-		newArray[index].done = !newArray[index].done
+		let indexOfElem = newArray.findIndex(value => value.id == index)
+
+		newArray[indexOfElem].done = !newArray[indexOfElem].done
 
 		SetTodos(newArray)
 	}
-
-	function removeItem(index: number) {
-		SetTodos(todos.filter((_, arrindex) => arrindex != index))
+	function removeItem(index: string) {
+		SetTodos(todos.filter((_,) => _.id != index))
 	}
-
 	function addItem() {
-		SetTodos([...todos, { info: textBoxValue, done: false }])
+		SetTodos([...todos, { info: textBoxValue, done: false, id: makeid(16) }])
 		_setTextBoxValue("");
 	}
 
@@ -51,14 +80,14 @@ function App() {
 		<div className="container">
 			<h1>Todo</h1>
 			<div className="todos">
-				{todos?.map((value, index) => 
+				{sortedList.map((value, index) => 
 					<Todo 
 						onDoneToggle={toggleDone}
 						onRemove={removeItem}
 
 						done={value.done}
 						info={value.info}
-						index={index} 
+						index={value.id} 
 						key={index}
 					/>
 				)}

@@ -3,12 +3,12 @@ import Button from "@material-ui/core/Button"
 
 import "./Todo.css"
 interface props {
-    onDoneToggle: (arg0: number) => void,
-    onRemove: (arg0: number) => void,
+    onDoneToggle: (arg0: string) => void,
+    onRemove: (arg0: string) => void,
 
     done: boolean, 
     info: string, 
-    index: number 
+    index: string 
 }
 
 export default function(props: props) {
