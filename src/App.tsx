@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import "./App.css"
 import Todo from './Todo';
+
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
+
+import "./App.css"
 
 interface todo {
 	info: string,

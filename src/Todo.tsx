@@ -1,7 +1,7 @@
 import React from "react";
-import "./Todo.css"
 import Button from "@material-ui/core/Button"
 
+import "./Todo.css"
 interface props {
     onDoneToggle: (arg0: number) => void,
     onRemove: (arg0: number) => void,
