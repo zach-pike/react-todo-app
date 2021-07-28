@@ -25,13 +25,15 @@ function makeid(length: number) {
 
 function App() {
 	const [todos, SetTodos] = useState<todo[]>(JSON.parse(localStorage.getItem("todo") || "[]"));
-
 	const [sortedList, _setSorted] = useState<todo[]>([]);
+	//textbox state
+	let [textBoxValue, _setTextBoxValue] = useState<string>("")
 
 	//save todo when it changes
 	useEffect(() => {
 		localStorage.setItem("todo", JSON.stringify(todos))
 
+		//sort list for display
 		let done: todo[] = [];
 		let undone: todo[] = [];
 
@@ -45,21 +47,21 @@ function App() {
 		_setSorted([...undone, ...done])
 	}, [todos])
 
-	//add textbox value
-	let [textBoxValue, _setTextBoxValue] = useState<string>("")
-
 	//functions for modifying the todo
-	function toggleDone(index: string) {
+	function toggleDone(id: string) {
 		let newArray = [...todos]
 
-		let indexOfElem = newArray.findIndex(value => value.id == index)
+		//find which todo has the specified id
+		let indexOfElem = newArray.findIndex(value => value.id == id)
 
+		//toggle it
 		newArray[indexOfElem].done = !newArray[indexOfElem].done
 
+		//set the state
 		SetTodos(newArray)
 	}
-	function removeItem(index: string) {
-		SetTodos(todos.filter((_,) => _.id != index))
+	function removeItem(id: string) {
+		SetTodos(todos.filter((value) => value.id != id))
 	}
 	function addItem() {
 		SetTodos([...todos, { info: textBoxValue, done: false, id: makeid(16) }])
@@ -91,6 +93,8 @@ function App() {
 						key={index}
 					/>
 				)}
+
+				{/* make the buttons invisible if there are less than 2 items on the todo */}
 				{( todos.length >= 2 ? 
 					<div style={{ marginLeft: "0.4em" }}>
 						<Button variant="contained" onClick={allDone}>Mark all as done</Button>
