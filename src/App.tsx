@@ -64,8 +64,10 @@ function App() {
 		SetTodos(todos.filter((value) => value.id != id))
 	}
 	function addItem() {
-		SetTodos([...todos, { info: textBoxValue, done: false, id: makeid(16) }])
-		_setTextBoxValue("");
+		if (textBoxValue != "") {
+			SetTodos([...todos, { info: textBoxValue, done: false, id: makeid(16) }])
+			_setTextBoxValue("");
+		}
 	}
 
 	function allDone() {
@@ -95,13 +97,12 @@ function App() {
 				)}
 
 				{/* make the buttons invisible if there are less than 2 items on the todo */}
-				{( todos.length >= 2 ? 
-					<div style={{ marginLeft: "0.4em" }}>
-						<Button variant="contained" onClick={allDone}>Mark all as done</Button>
-						<Button variant="contained" onClick={() => SetTodos([])}>Remove all</Button>
-					</div> 
-					: <></>
-				)}
+				{/* 0.4em comes from /src/Todo.css, class: TodoItem, and makes sure the buttons dont overhang the list */}
+				
+				<div style={{ marginLeft: "0.4em", marginRight: "0.4em", visibility: ( todos.length >= 2 ? "visible" : "hidden" ) }}>
+					<Button variant="contained" onClick={allDone}>Mark all as done</Button>
+					<Button variant="contained" onClick={() => SetTodos([])}>Remove all</Button>
+				</div>
 			</div>
 
 			<div className="AddItem">
@@ -111,7 +112,8 @@ function App() {
 					variant="standard" 
 					label="Todo name" 
 					onChange={e => _setTextBoxValue(e.target.value)} 
-					value={textBoxValue}></TextField>
+					value={textBoxValue}
+					onKeyDown={(e) => { if (e.key == "Enter") addItem() }}></TextField>
 				
 				<Button variant="contained" onClick={addItem} color="primary">Add</Button>
 			</div>
