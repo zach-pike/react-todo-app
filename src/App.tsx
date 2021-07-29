@@ -98,9 +98,9 @@ function App() {
 
 				{/* make the buttons invisible if there are less than 2 items on the todo */}
 				{/* 0.4em comes from /src/Todo.css, class: TodoItem, and makes sure the buttons dont overhang the list */}
-				
+
 				<div style={{ marginLeft: "0.4em", marginRight: "0.4em", visibility: ( todos.length >= 2 ? "visible" : "hidden" ) }}>
-					<Button variant="contained" onClick={allDone}>Mark all as done</Button>
+					<Button variant="contained" onClick={allDone} style={{ marginRight: "0.6em" }}>Mark all as done</Button>
 					<Button variant="contained" onClick={() => SetTodos([])}>Remove all</Button>
 				</div>
 			</div>
